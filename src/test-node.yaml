@@ -1,0 +1,204 @@
+openapi: 3.0.0
+info:
+  title: Combined API Specification
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Checks if the service is up and running
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'coffee-order-svc is up and running on port :: 3000'
+  /{userId}:
+    get:
+      summary: Get user orders
+      description: Retrieves all orders for a specific user
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        description: ID of the user
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful retrieval of user orders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'User Orders Retrieved :: user123'
+                  data:
+                    type: array
+                    items:
+                      type: object
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: An error occurred
+    post:
+      summary: Create user order
+      description: Creates a new order for a specific user
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        description: ID of the user
+        schema:
+          type: string
+      requestBody:
+        description: Order details
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Name of the item
+                      quantity:
+                        type: integer
+                        description: Quantity of the item
+                    required:
+                    - name
+                    - quantity
+              required:
+              - items
+      responses:
+        '200':
+          description: Successful creation of order
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Order Created :: user123'
+                  data:
+                    type: object
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: An error occurred
+                  message:
+                    type: string
+                    example: 'user does not have anything to checkout :: user123'
+                  data:
+                    type: object
+    delete:
+      summary: Delete all orders for a user
+      description: Deletes all orders associated with a given user ID
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        description: ID of the user
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful deletion of all orders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'All Orders Deleted :: user123'
+                  data:
+                    type: object
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: An error occurred
+  /{userId}/{orderId}:
+    delete:
+      summary: Delete order by ID
+      description: Deletes a specific order by its ID
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        description: ID of the user
+        schema:
+          type: string
+      - name: orderId
+        in: path
+        required: true
+        description: ID of the order to delete
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful deletion of order
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Order Deleted by Id :: order123'
+                  data:
+                    type: object
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: An error occurred
+components:
+  schemas: {}
