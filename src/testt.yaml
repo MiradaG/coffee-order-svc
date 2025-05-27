@@ -37,7 +37,7 @@ paths:
                   properties:
                     orderId:
                       type: string
-                      description: The ID of the order
+                      description: ID of the order
                     items:
                       type: array
                       items:
